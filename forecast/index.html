@@ -210,6 +210,12 @@ async function loadLive(){
       if(e.event!=='message'||!m||m.v!==1||typeof m.away!=='boolean'||typeof m.ts!=='number'||m.ts>Date.now()+120000||m.ts<Date.now()-864e5) continue;
       if(!best||m.ts>best.ts) best=m;
     }
+    if(best&&!(best.since>0)){  // board restarted: carry over the last known time for the same state
+      let prev=null;
+      for(const line of txt.split('\n')){let e,m;try{e=JSON.parse(line);m=JSON.parse(e.message)}catch(_){continue}
+        if(m&&m.v===1&&m.away===best.away&&m.since>0&&m.ts<=best.ts&&(!prev||m.ts>prev.ts)) prev=m;}
+      if(prev) best={...best,since:prev.since};
+    }
     if(best){L=best;render();}
   }catch(_){}
 }
@@ -248,7 +254,8 @@ function decide(F){
   const out=T.state==='out', exitE=toH(T.exit_expected), tea=toH(T.tea_expected), teaEnd=T.tea_range?toH(T.tea_range[1]):tea+.75;
   const left=!!T.exit_actual||out||(T.events||[]).length>0||(!T.exit_actual&&!(T.events||[]).length&&h>exitE+1);
   const popped=(T.events||[]).some((e,i,a)=>e.back&&a[i+1]&&toH(e.back)>=9.5&&toH(e.back)<=12);
-  const teaDone=!!T.tea_actual||(!out&&h>=13&&left);
+  const sinceH=T.since?toH(T.since):null, teaStart=T.tea_range?toH(T.tea_range[0]):tea-.75;
+  const teaDone=!!T.tea_actual||(!out&&left&&((sinceH!=null&&sinceH>=teaStart-.75&&sinceH<=h)||h>=tea));
   const bfast=x=>({label:'Breakfast',what:`Have it down by <em>${fmt(q15(x-10/60))}</em>`,why:`He'll head out around ${fmt(r5(x))}.`,at:q15(x-10/60)});
 
   if(h<5) return bfast(exitE);
@@ -259,6 +266,7 @@ function decide(F){
   }
   if(!teaDone){
     const ready=q15(tea-10/60);
+    if(!out&&h>=11) return {label:'Dinner',what:`Dinner at <em>${fmt(ready)}</em>`,why:`He's popped home early. He may head out again, but plan on ${fmt(ready)}.`,at:ready};
     if(h<tea) return {label:'Dinner',what:`Get it ready for <em>${fmt(ready)}</em>`,why:`He should be home around ${fmt(r5(tea))}.`,at:ready};
     if(h<teaEnd) return {label:'Dinner',what:'He\'s due home <em>any minute</em>',why:`He's usually back by ${fmt(q15(teaEnd))}.`};
     return {label:'Dinner',what:'Running late for dinner',why:`He's usually home by ${fmt(q15(teaEnd))}. Worth a look outside.`,warn:true};
