@@ -1,0 +1,353 @@
+{
+ "generated": "2026-11-23T13:43+00:00",
+ "data_through": "2026-11-22",
+ "today": {
+  "date": "2026-11-23",
+  "now": "13:43",
+  "state": "out",
+  "since": "10:56",
+  "events": [
+   {
+    "out": "08:18",
+    "back": "10:34"
+   },
+   {
+    "out": "10:56",
+    "back": null
+   }
+  ],
+  "weather": {
+   "t_min": -0.3,
+   "t_max": 6.2,
+   "rain_mm": 0.0,
+   "sunrise": "07:36",
+   "sunset": "16:01"
+  },
+  "exit_actual": "08:18",
+  "exit_expected": "07:15",
+  "exit_err_min": 63,
+  "tea_actual": null,
+  "tea_expected": "16:10",
+  "tea_range": [
+   "15:14",
+   "16:52"
+  ],
+  "hourly": {
+   "6": {
+    "actual": false,
+    "p": null
+   },
+   "7": {
+    "actual": false,
+    "p": null
+   },
+   "8": {
+    "actual": true,
+    "p": null
+   },
+   "9": {
+    "actual": true,
+    "p": null
+   },
+   "10": {
+    "actual": true,
+    "p": null
+   },
+   "11": {
+    "actual": true,
+    "p": null
+   },
+   "12": {
+    "actual": true,
+    "p": null
+   },
+   "13": {
+    "actual": null,
+    "p": 1.0
+   },
+   "14": {
+    "actual": null,
+    "p": 0.895
+   },
+   "15": {
+    "actual": null,
+    "p": 0.797
+   },
+   "16": {
+    "actual": null,
+    "p": 0.701
+   },
+   "17": {
+    "actual": null,
+    "p": 0.584
+   },
+   "18": {
+    "actual": null,
+    "p": 0.479
+   },
+   "19": {
+    "actual": null,
+    "p": 0.39
+   },
+   "20": {
+    "actual": null,
+    "p": 0.324
+   },
+   "21": {
+    "actual": null,
+    "p": 0.288
+   },
+   "22": {
+    "actual": null,
+    "p": 0.269
+   },
+   "23": {
+    "actual": null,
+    "p": 0.263
+   }
+  }
+ },
+ "days": [
+  {
+   "date": "2026-11-24",
+   "weekend": false,
+   "weather": {
+    "t_min": 0.5,
+    "t_max": 6.5,
+    "rain_mm": 0.8,
+    "sunrise": "07:37",
+    "sunset": "16:00"
+   },
+   "note": null,
+   "exit": "07:15",
+   "exit_range": [
+    "06:15",
+    "08:15"
+   ],
+   "tea": "16:09",
+   "tea_range": [
+    "15:13",
+    "16:51"
+   ],
+   "hours_out": 9.6,
+   "hourly": {
+    "6": 0.193,
+    "7": 0.583,
+    "8": 0.822,
+    "9": 0.907,
+    "10": 0.942,
+    "11": 0.944,
+    "12": 0.934,
+    "13": 0.912,
+    "14": 0.871,
+    "15": 0.801,
+    "16": 0.708,
+    "17": 0.593,
+    "18": 0.496,
+    "19": 0.412,
+    "20": 0.343,
+    "21": 0.313,
+    "22": 0.289,
+    "23": 0.268
+   },
+   "adjusted": false
+  },
+  {
+   "date": "2026-11-25",
+   "weekend": false,
+   "weather": {
+    "t_min": 0.7,
+    "t_max": 4.7,
+    "rain_mm": 0.0,
+    "sunrise": "07:39",
+    "sunset": "15:59"
+   },
+   "note": null,
+   "exit": "07:00",
+   "exit_range": [
+    "06:15",
+    "08:30"
+   ],
+   "tea": "16:08",
+   "tea_range": [
+    "15:12",
+    "16:50"
+   ],
+   "hours_out": 9.6,
+   "hourly": {
+    "6": 0.179,
+    "7": 0.583,
+    "8": 0.818,
+    "9": 0.907,
+    "10": 0.936,
+    "11": 0.945,
+    "12": 0.938,
+    "13": 0.91,
+    "14": 0.877,
+    "15": 0.818,
+    "16": 0.715,
+    "17": 0.612,
+    "18": 0.498,
+    "19": 0.39,
+    "20": 0.338,
+    "21": 0.314,
+    "22": 0.286,
+    "23": 0.272
+   },
+   "adjusted": false
+  }
+ ],
+ "late_nights": [
+  2,
+  7
+ ],
+ "habits": {
+  "snack": "10:26",
+  "snack_days": [
+   4,
+   7
+  ],
+  "bedtime": "21:23"
+ },
+ "scorecard": {
+  "backtest": {
+   "days": [
+    {
+     "date": "2026-11-16",
+     "exit_pred": "06:45",
+     "exit_actual": "07:33",
+     "exit_err_min": 48,
+     "exit_hit": false,
+     "tea_pred": "16:20",
+     "tea_actual": "14:57",
+     "tea_err_min": -83,
+     "tea_hit": false,
+     "hours_pred": 9.6,
+     "hours_actual": 12.9,
+     "hours_err": 3.4,
+     "hours_hit": false,
+     "hourly_right": 0.667
+    },
+    {
+     "date": "2026-11-17",
+     "exit_pred": "07:00",
+     "exit_actual": "06:29",
+     "exit_err_min": -31,
+     "exit_hit": true,
+     "tea_pred": "16:18",
+     "tea_actual": "15:59",
+     "tea_err_min": -19,
+     "tea_hit": true,
+     "hours_pred": 9.6,
+     "hours_actual": 9.3,
+     "hours_err": -0.4,
+     "hours_hit": true,
+     "hourly_right": 0.833
+    },
+    {
+     "date": "2026-11-18",
+     "exit_pred": "07:00",
+     "exit_actual": "06:32",
+     "exit_err_min": -28,
+     "exit_hit": true,
+     "tea_pred": "16:17",
+     "tea_actual": "15:36",
+     "tea_err_min": -41,
+     "tea_hit": true,
+     "hours_pred": 9.6,
+     "hours_actual": 14.1,
+     "hours_err": 4.5,
+     "hours_hit": false,
+     "hourly_right": 0.611
+    },
+    {
+     "date": "2026-11-19",
+     "exit_pred": "06:45",
+     "exit_actual": "07:12",
+     "exit_err_min": 27,
+     "exit_hit": true,
+     "tea_pred": "16:06",
+     "tea_actual": "17:20",
+     "tea_err_min": 74,
+     "tea_hit": false,
+     "hours_pred": 9.6,
+     "hours_actual": 9.6,
+     "hours_err": -0.1,
+     "hours_hit": true,
+     "hourly_right": 0.944
+    },
+    {
+     "date": "2026-11-20",
+     "exit_pred": "07:00",
+     "exit_actual": "06:18",
+     "exit_err_min": -42,
+     "exit_hit": true,
+     "tea_pred": "16:06",
+     "tea_actual": "16:14",
+     "tea_err_min": 8,
+     "tea_hit": true,
+     "hours_pred": 9.6,
+     "hours_actual": 9.6,
+     "hours_err": -0.1,
+     "hours_hit": true,
+     "hourly_right": 0.667
+    },
+    {
+     "date": "2026-11-21",
+     "exit_pred": "08:00",
+     "exit_actual": "07:50",
+     "exit_err_min": -10,
+     "exit_hit": true,
+     "tea_pred": "16:04",
+     "tea_actual": "16:15",
+     "tea_err_min": 11,
+     "tea_hit": true,
+     "hours_pred": 9.6,
+     "hours_actual": 9.7,
+     "hours_err": 0.2,
+     "hours_hit": true,
+     "hourly_right": 0.778
+    },
+    {
+     "date": "2026-11-22",
+     "exit_pred": "07:00",
+     "exit_actual": "09:38",
+     "exit_err_min": 158,
+     "exit_hit": false,
+     "tea_pred": "16:03",
+     "tea_actual": "16:38",
+     "tea_err_min": 35,
+     "tea_hit": true,
+     "hours_pred": 9.6,
+     "hours_actual": 7.9,
+     "hours_err": -1.8,
+     "hours_hit": true,
+     "hourly_right": 0.778
+    }
+   ],
+   "summary": {
+    "days": 7,
+    "exit_hit": 0.714,
+    "exit_mae_min": 49.1,
+    "tea_hit": 0.714,
+    "tea_mae_min": 38.7,
+    "hours_hit": 0.714,
+    "hours_mae": 1.5,
+    "hourly_right": 0.754
+   }
+  },
+  "live": {
+   "days": [],
+   "summary": null
+  }
+ },
+ "methods": {
+  "exit": "sim",
+  "tea": "anchor",
+  "hours": "anchor"
+ },
+ "tolerances": {
+  "time_min": 45,
+  "hours": 2.0
+ }
+}

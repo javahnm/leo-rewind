@@ -1,0 +1,54 @@
+/* Leo the cat */
+.cat{width:100%;color:inherit}
+.cat svg{display:block;width:100%;height:auto;max-height:24cqh;overflow:visible}
+.cat.sm svg{max-height:16cqh}
+.card > .cat.abs{position:absolute;right:6cqw;bottom:0;width:30cqw;z-index:1}
+.tail-f,.tail-s,.dangle,.wave,.leg,.eyes,.yawn,.breathe,.nod,.case,.z,.steam path,.peek,.sun,.ghost,.fresh{transform-box:fill-box}
+.tail-f{transform-origin:0% 100%} .tail-s{transform-origin:100% 100%} .dangle{transform-origin:0% 0%}
+.wave{transform-origin:50% 100%} .leg{transform-origin:50% 0%} .eyes{transform-origin:50% 50%}
+.yawn{transform-origin:50% 0%;transform:scale(.25)} .breathe{transform-origin:50% 100%} .nod{transform-origin:0% 100%}
+.ghost{opacity:.35} .z{opacity:0}
+@media (prefers-reduced-motion: no-preference){
+  .anim .tail-f{animation:swayF 2.6s ease-in-out infinite alternate}
+  .anim .tail-s{animation:swayS 1.4s ease-in-out infinite alternate}
+  .anim .dangle{animation:dangle 2.2s ease-in-out infinite alternate}
+  .anim .eyes{animation:blink 4.6s infinite}
+  .anim .walk .la{animation:legA .55s ease-in-out infinite alternate} .anim .walk .lb{animation:legB .55s ease-in-out infinite alternate}
+  .anim .run .la{animation:legA2 .22s ease-in-out infinite alternate} .anim .run .lb{animation:legB2 .22s ease-in-out infinite alternate}
+  .anim .walk .bob{animation:bob .55s ease-in-out infinite alternate}
+  .anim .mover{animation:cross var(--dur,10s) linear infinite}
+  .anim .peek{animation:peek 1.1s cubic-bezier(.2,.9,.2,1) both .3s}
+  .anim .yawn{animation:yawn 4s ease-in-out infinite}
+  .anim .sun{animation:sun 5s ease-out both}
+  .anim .steam path{animation:steam 2.4s ease-in-out infinite}
+  .anim .hills{animation:hills var(--dur,6s) linear infinite}
+  .anim .star{animation:twinkle 2.6s ease-in-out infinite}
+  .anim .breathe{animation:breathe 3.2s ease-in-out infinite alternate}
+  .anim .z{animation:zz 3s ease-out infinite}
+  .anim .ghost{animation:ghost 3s ease-in-out infinite alternate}
+  .anim .fresh{animation:fresh 3s ease-in-out infinite alternate}
+  .anim .wave{animation:waveP .5s ease-in-out infinite alternate}
+  .anim .nod{animation:nod .7s ease-in-out infinite alternate}
+  .anim .case{animation:swing .55s ease-in-out infinite alternate;transform-origin:50% 0%}
+}
+@keyframes swayF{from{transform:rotate(-6deg)}to{transform:rotate(9deg)}}
+@keyframes swayS{from{transform:rotate(-10deg)}to{transform:rotate(12deg)}}
+@keyframes dangle{from{transform:rotate(-10deg)}to{transform:rotate(12deg)}}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+@keyframes legA{from{transform:rotate(24deg)}to{transform:rotate(-24deg)}} @keyframes legB{from{transform:rotate(-24deg)}to{transform:rotate(24deg)}}
+@keyframes legA2{from{transform:rotate(40deg)}to{transform:rotate(-40deg)}} @keyframes legB2{from{transform:rotate(-40deg)}to{transform:rotate(40deg)}}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(2px)}}
+@keyframes cross{from{transform:translateX(var(--from,-150px))}to{transform:translateX(420px)}}
+@keyframes peek{from{transform:translateY(70px)}to{transform:translateY(0)}}
+@keyframes yawn{0%,55%,100%{transform:scale(.25)}70%,85%{transform:scale(1.25)}}
+@keyframes sun{from{transform:translateY(46px)}to{transform:translateY(0)}}
+@keyframes steam{0%{opacity:0;transform:translateY(6px)}40%{opacity:.8}100%{opacity:0;transform:translateY(-10px)}}
+@keyframes hills{from{transform:translateX(0)}to{transform:translateX(var(--step,-200px))}}
+@keyframes twinkle{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes breathe{from{transform:scale(1)}to{transform:scale(1.04,1.06)}}
+@keyframes zz{0%{opacity:0;transform:translate(0,6px)}30%{opacity:1}100%{opacity:0;transform:translate(10px,-18px)}}
+@keyframes ghost{from{opacity:.85}to{opacity:.12}}
+@keyframes fresh{from{opacity:.25}to{opacity:1}}
+@keyframes waveP{from{transform:rotate(-14deg)}to{transform:rotate(18deg)}}
+@keyframes nod{from{transform:translateY(0)}to{transform:translateY(4px)}}
+@keyframes swing{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
