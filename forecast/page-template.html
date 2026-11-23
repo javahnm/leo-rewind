@@ -98,12 +98,27 @@ function today(F,date){
     return {...base,state:st,since:L.since>0?ukHM(L.since):(same?base.since:null)};}
   return isStale(F)?{...base,state:null}:base;
 }
+// Fallback for days not in the published forecast: Leo's learned habits + today's sun times,
+// fetched by the browser itself (no server, no Mac).
+let SUN={};
+async function loadSun(){
+  try{const r=await (await fetch('https://api.open-meteo.com/v1/forecast?latitude=52.04&longitude=-0.76&daily=sunrise,sunset,temperature_2m_min,temperature_2m_max,precipitation_sum&timezone=Europe%2FLondon&forecast_days=3')).json();
+    r.daily.time.forEach((d,i)=>SUN[d]={sunrise:r.daily.sunrise[i].slice(11),sunset:r.daily.sunset[i].slice(11),t_min:r.daily.temperature_2m_min[i],t_max:r.daily.temperature_2m_max[i],rain_mm:r.daily.precipitation_sum[i]});
+    render();}catch(_){}
+}
+function fromHabits(F,date){
+  const P=F.params, s=SUN[date]; if(!P||!s) return null;
+  const we=[0,6].includes(new Date(date+'T12:00:00Z').getUTCDay()), ex=we?P.exit_weekend_min:P.exit_weekday_min, tv=P.tea_vs_sunset_min;
+  const sr=toH(s.sunrise), ss=toH(s.sunset), hm=x=>{const h=Math.floor(x),m=Math.round((x-h)*60);return `${String(h).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`};
+  return {date,exit:hm(sr+ex[0]/60),tea:hm(ss+tv[0]/60),tea_range:[hm(ss+tv[1]/60),hm(ss+tv[2]/60)],weather:s};
+}
 function todayBase(F,date){
   if(F.today&&F.today.date===date) return F.today;
-  const d=(F.days||[]).find(x=>x.date===date);
+  const d=(F.days||[]).find(x=>x.date===date)||fromHabits(F,date);
   return d?{date,state:null,since:null,events:[],exit_actual:null,exit_expected:d.exit,tea_actual:null,tea_expected:d.tea,tea_range:d.tea_range,weather:d.weather}:null;
 }
-function tomorrowExit(F,date){const d=(F.days||[]).find(x=>x.date>date);return d?toH(d.exit):null}
+function tomorrowExit(F,date){let d=(F.days||[]).find(x=>x.date>date);
+  if(!d){const k=Object.keys(SUN).find(x=>x>date); d=k&&fromHabits(F,k);} return d?toH(d.exit):null}
 
 function decide(F){
   const {date,h}=ukParts(), T=today(F,date), H=F.habits||{}, snack=toH(H.snack), bed=toH(H.bedtime)||21.5;
@@ -161,7 +176,7 @@ function render(){
     :(()=>{const a2=liveFresh()?Math.round((Date.now()-L.ts)/60000):age;return a2<2?'Live · just updated':`Live · updated ${a2} min ago`})();
 }
 async function load(){try{const r=await fetch(`forecast.json?t=${Date.now()}`,{cache:'no-store'});F=await r.json();render();}catch(e){}}
-load(); loadLive(); setInterval(load,300000); setInterval(loadLive,60000); setInterval(render,30000);
+load(); loadLive(); loadSun(); setInterval(loadSun,6*3600000); setInterval(load,300000); setInterval(loadLive,60000); setInterval(render,30000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){load();loadLive()}});
 </script>
 </body>
