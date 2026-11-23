@@ -5,168 +5,164 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Leo's Forecast</title>
-<meta name="description" content="Leo the cat's day ahead: when he'll go out, pop in for a snack, and be home for dinner.">
+<meta name="description" content="What Leo the cat needs next: breakfast, snack, dinner or bedtime.">
 <meta property="og:title" content="Leo's Forecast">
-<meta property="og:description" content="When to have Leo's dinner ready, and the rest of his day ahead.">
+<meta property="og:description" content="What Leo the cat needs next.">
 <meta name="theme-color" content="#f4f5f7">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%88%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
 <style>
-/* Layout: a cat's day planner. Each day: one short story, then a meal-time list (time on the left, what to do on the right). */
+/* Layout: one screen, one answer. Status pill, then a single "next up" card. */
 :root{
   --page:#f4f5f7; --card:#ffffff; --ink:#16191e; --ink-2:#4b525c; --muted:#7d848f; --line:#e3e6eb;
-  --out:#eb6834; --out-bg:#fde8de; --out-ink:#8a3a12; --home-bg:#e6eefb; --home-ink:#1f4f8f;
-  --good:#0c6b0c; --good-bg:#e1f2df; --none:#6b7280;
+  --out:#eb6834; --out-bg:#fde8de; --out-ink:#8a3a12; --home-bg:#e6eefb; --home-ink:#1f4f8f; --warn-bg:#fff1cc; --warn-ink:#7a5200;
   --f-display:"Bricolage Grotesque", "Inter", system-ui, sans-serif; --f-body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --page:#101215; --card:#1a1d22; --ink:#eef0f3; --ink-2:#c0c6cf; --muted:#8c939d; --line:#2b3037;
-  --out:#d95926; --out-bg:#3b2014; --out-ink:#f4ab89; --home-bg:#18263a; --home-ink:#9cc0ef;
-  --good:#7fd67f; --good-bg:#173019; --none:#9aa1ab; color-scheme:dark;}}
+  --out:#d95926; --out-bg:#3b2014; --out-ink:#f4ab89; --home-bg:#18263a; --home-ink:#9cc0ef; --warn-bg:#352a10; --warn-ink:#f0d48a; color-scheme:dark;}}
+html,body{height:100%}
 *{box-sizing:border-box}
-body{margin:0;background:var(--page);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;
-  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:28px 56px}
-.wrap{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
-h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance}
-h1{font-size:clamp(2.2rem,8vw,3.1rem);font-weight:800;letter-spacing:-.02em;line-height:1}
-h2{font-size:1.4rem;font-weight:800}
-h3{font-size:1.35rem;font-weight:800}
-p{margin:0}
-.hero{display:flex;flex-direction:column;gap:8px}
-.hero .cat svg{max-height:64px}
-.updated{color:var(--muted);font-size:.9rem}
-.day{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:16px}
-.day.today{border:2px solid var(--out)}
-.dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
-.wx{color:var(--muted);font-size:.9rem}
-.now{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;border-radius:999px;padding:6px 14px;font-weight:600;font-size:.95rem}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:24px}
+.wrap{max-width:560px;min-height:100%;margin:0 auto;display:flex;flex-direction:column;justify-content:center;gap:22px}
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+h1{font-family:var(--f-display);font-weight:800;font-size:1.6rem;margin:0;letter-spacing:-.01em}
+.top .cat{width:150px;flex:none}
+.top .cat svg{max-height:44px}
+.now{display:inline-flex;align-items:center;gap:9px;align-self:flex-start;border-radius:999px;padding:8px 16px;font-weight:600}
 .now.out{background:var(--out-bg);color:var(--out-ink)} .now.home{background:var(--home-bg);color:var(--home-ink)}
 .now i{width:9px;height:9px;border-radius:50%;background:currentColor}
 @media (prefers-reduced-motion: no-preference){.now i{animation:pulse 2s ease-in-out infinite}}
 @keyframes pulse{50%{opacity:.3}}
-.story{font-size:1.08rem;color:var(--ink)}
-.meals{display:flex;flex-direction:column}
-.meal{display:grid;grid-template-columns:7.2rem 1fr;gap:14px;padding:12px 0;border-top:1px solid var(--line);align-items:baseline}
-.meal .when{display:flex;flex-direction:column;line-height:1.2}
-.meal .when b{font-family:var(--f-display);font-size:1.3rem;font-weight:800}
-.meal .when span{font-size:.76rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
-.meal p{color:var(--ink-2)}
-.meal.key{background:var(--out-bg);border-radius:14px;padding:12px 14px;border-top:0;margin:4px -6px}
-.meal.key p{color:var(--ink)}
-.meal.key .when b{color:var(--out-ink)}
-.meal.skip .when b{color:var(--none)}
-.meal.done .when b{color:var(--muted)}
-.score{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:12px}
-.score p{color:var(--ink-2)}
-.score p b{color:var(--ink)}
-details summary{cursor:pointer;font-weight:600;color:var(--ink);padding:6px 0}
-.tbl{overflow-x:auto;margin-top:8px}
-table{border-collapse:collapse;width:100%;font-size:.9rem;font-variant-numeric:tabular-nums}
-th{text-align:left;font-size:.74rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:0 10px 8px 0;border-bottom:1px solid var(--line)}
-td{padding:9px 10px 9px 0;border-bottom:1px solid var(--line);white-space:nowrap}
-.res{display:inline-block;font-size:.76rem;font-weight:600;padding:2px 8px;border-radius:999px;margin-left:6px}
-.res.hit{background:var(--good-bg);color:var(--good)} .res.miss{background:var(--out-bg);color:var(--out-ink)}
-.foot{font-size:.85rem;color:var(--muted)}
-@media (max-width:520px){.meal{grid-template-columns:5.6rem 1fr;gap:10px}.meal .when b{font-size:1.12rem}}
+.next{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:28px 26px 30px;display:flex;flex-direction:column;gap:10px}
+.next.warn{background:var(--warn-bg);border-color:transparent}
+.label{font-size:.8rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.what{font-family:var(--f-display);font-weight:800;font-size:clamp(2.1rem,9vw,3rem);line-height:1.02;letter-spacing:-.02em;text-wrap:balance}
+.what em{font-style:normal;color:var(--out)}
+.why{font-size:1.1rem;color:var(--ink-2)}
+.count{font-size:.95rem;color:var(--muted)}
+.fresh{font-size:.82rem;color:var(--muted)}
 __CATCSS__
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="hero">
-    <div class="cat anim" data-scene="stroll"></div>
-    <h1>Leo's Forecast</h1>
-    <p class="updated" id="updated">Fetching Leo's plans…</p>
-  </header>
-  <div id="days" style="display:flex;flex-direction:column;gap:18px"></div>
-  <section class="score" id="score"></section>
-  <p class="foot">Worked out from Leo's AirTag, the Milton Keynes weather and a little maths. He's a cat, so he doesn't always read the forecast.</p>
-</div>
+<main class="wrap">
+  <div class="top"><h1>Leo</h1><div class="cat anim" data-scene="stroll"></div></div>
+  <span class="now" id="now" hidden><i></i><span></span></span>
+  <section class="next" id="next">
+    <span class="label">Next up</span>
+    <div class="what">Checking on Leo…</div>
+  </section>
+  <p class="fresh" id="fresh"></p>
+</main>
 <script>
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 __CATLIB__
 </script>
 <script>
-const DOWL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const toH=s=>{if(!s)return null;const [h,m]=s.split(':').map(Number);return h+m/60};
 const fmt=x=>{if(x==null)return'–';x=((x%24)+24)%24;let h=Math.floor(x),m=Math.round((x-h)*60);if(m===60){h=(h+1)%24;m=0}
-  if(h===0&&m===0)return'midnight';if(h===12&&m===0)return'noon';const ap=h<12?'am':'pm';const hh=h%12||12;return m?`${hh}:${String(m).padStart(2,'0')}${ap}`:`${hh}${ap}`};
-const r5=x=>Math.round(x*12)/12, q15down=x=>Math.floor(x*4)/4, q15=x=>Math.round(x*4)/4;
-const dname=d=>{const x=new Date(d+'T12:00:00Z');return DOWL[x.getUTCDay()]};
-const ddate=d=>{const x=new Date(d+'T12:00:00Z');return `${x.getUTCDate()} ${x.toLocaleString('en-GB',{month:'long',timeZone:'UTC'})}`};
-const mins=m=>m>=55&&m<=85?'about an hour':m>=110&&m<=130?'about two hours':`${m} minutes`;
-const sky=w=>{const t=w.t_min<1?'frosty':w.t_min<4?'chilly':'mild';const r=w.rain_mm>=1?'wet':w.rain_mm>0?'mostly dry':'dry';return `${t} and ${r}`};
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  if(h===12&&m===0)return'noon';const ap=h<12?'am':'pm';const hh=h%12||12;return m?`${hh}:${String(m).padStart(2,'0')}${ap}`:`${hh}${ap}`};
+const q15=x=>Math.round(x*4)/4, r5=x=>Math.round(x*12)/12;
+const ukParts=()=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).map(x=>[x.type,x.value]));
+  return {date:`${p.year}-${p.month}-${p.day}`,h:+p.hour+(+p.minute)/60}};
+const inT=(from,to)=>{const m=Math.round((to-from)*60);if(m<=0)return'';if(m<60)return`in ${m} min`;const h=Math.floor(m/60),r=m%60;return`in ${h}h${r?` ${String(r).padStart(2,'0')}m`:''}`};
+let F=null;
 
-function meal(when,label,text,cls=''){return `<div class="meal ${cls}"><div class="when"><span>${label}</span><b>${when}</b></div><p>${text}</p></div>`}
-
-function plan(d,H,late,o={}){
-  const exit=toH(d.exit),tea=toH(d.tea),snack=toH(H.snack),bed=toH(H.bedtime);
-  const ready=q15(tea-10/60), rows=[];
-  rows.push(o.breakfastDone ? meal(fmt(exit),'Breakfast',o.breakfastDone,'done')
-    : meal(`by ${fmt(q15down(exit-10/60))}`,'Breakfast',`He'll be heading out around ${fmt(r5(exit))}, so have breakfast down before then.`));
-  if(o.snackDone) rows.push(meal(o.snackDone[0],'Snack',o.snackDone[1],'done'));
-  else if(snack!=null) rows.push(meal(`~${fmt(q15(snack))}`,'Snack',`He often pops back mid-morning for a quick bite (${H.snack_days[0]} of the last ${H.snack_days[1]} days). Leave a little something out.`));
-  rows.push(meal('Not home','Lunch',`Don't wait for him. He's been out every lunchtime.`,'skip'));
-  rows.push(o.teaDone ? meal(fmt(tea),'Dinner',o.teaDone,'done')
-    : meal(fmt(ready),'Dinner',`<b>Get his dinner ready for ${fmt(ready)}.</b> He should be home around ${fmt(r5(tea))}${d.tea_range?`, usually between ${fmt(q15(toH(d.tea_range[0])))} and ${fmt(q15(toH(d.tea_range[1])))}`:''}, as it gets dark.`,'key'));
-  rows.push(meal(`~${fmt(q15(bed))}`,'Bedtime',`He's usually in for the night by about ${fmt(q15(bed))}. He's been out after 10pm on ${late[0]} of the last ${late[1]} nights, so check on him at 10:30pm if he's not back.`));
-  return `<div class="meals">${rows.join('')}</div>`;
+// today's plan: the live card if it's for today, otherwise today's forecast from the day list
+const STALE_MIN=150;
+const isStale=F=>(Date.now()-new Date(F.generated))/60000>STALE_MIN;
+// Live status straight from the scanner (it posts on every out/home change + every 20 min).
+const LIVE_URL='https://ntfy.sh/leo-live-8texlivbayux3f4mkn9d/json?poll=1&since=3h';
+let L=null;
+const liveFresh=()=>!!(L&&Date.now()-L.ts<45*60000);
+const ukHM=ms=>new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(ms));
+async function loadLive(){
+  try{
+    const txt=await (await fetch(LIVE_URL,{cache:'no-store'})).text();
+    let best=null;
+    for(const line of txt.split('\n')){
+      let e,m; try{e=JSON.parse(line);m=JSON.parse(e.message)}catch(_){continue}
+      // only well-formed status messages; anything else on the channel is ignored
+      if(e.event!=='message'||!m||m.v!==1||typeof m.away!=='boolean'||typeof m.ts!=='number'||m.ts>Date.now()+120000||m.ts<Date.now()-864e5) continue;
+      if(!best||m.ts>best.ts) best=m;
+    }
+    if(best){L=best;render();}
+  }catch(_){}
 }
+function today(F,date){
+  const base=todayBase(F,date); if(!base) return null;
+  if(liveFresh()){const st=L.away?'out':'home', same=base.state===st;
+    return {...base,state:st,since:L.since>0?ukHM(L.since):(same?base.since:null)};}
+  return isStale(F)?{...base,state:null}:base;
+}
+function todayBase(F,date){
+  if(F.today&&F.today.date===date) return F.today;
+  const d=(F.days||[]).find(x=>x.date===date);
+  return d?{date,state:null,since:null,events:[],exit_actual:null,exit_expected:d.exit,tea_actual:null,tea_expected:d.tea,tea_range:d.tea_range,weather:d.weather}:null;
+}
+function tomorrowExit(F,date){const d=(F.days||[]).find(x=>x.date>date);return d?toH(d.exit):null}
 
-function render(F){
-  const g=new Date(F.generated);
-  document.getElementById('updated').textContent=`Updated ${g.toLocaleString('en-GB',{weekday:'long',hour:'numeric',minute:'2-digit',hour12:true,timeZone:'Europe/London'})}`;
-  const H=F.habits||{snack:null,snack_days:[0,0],bedtime:'21:30'}, late=F.late_nights||[0,0];
-  const box=document.getElementById('days'); box.innerHTML='';
+function decide(F){
+  const {date,h}=ukParts(), T=today(F,date), H=F.habits||{}, snack=toH(H.snack), bed=toH(H.bedtime)||21.5;
+  if(!T) return {label:'Next up',what:'Waiting for fresh data',why:'The forecast will be back shortly.'};
+  if(T.state==null) return byClock(T,h,snack,bed,F,date);
+  const out=T.state==='out', exitE=toH(T.exit_expected), tea=toH(T.tea_expected), teaEnd=T.tea_range?toH(T.tea_range[1]):tea+.75;
+  const left=!!T.exit_actual||out||(T.events||[]).length>0||(!T.exit_actual&&!(T.events||[]).length&&h>exitE+1);
+  const popped=(T.events||[]).some((e,i,a)=>e.back&&a[i+1]&&toH(e.back)>=9.5&&toH(e.back)<=12);
+  const teaDone=!!T.tea_actual||(!out&&h>=13&&left);
+  const bfast=x=>({label:'Breakfast',what:`Have it down by <em>${fmt(q15(x-10/60))}</em>`,why:`He'll head out around ${fmt(r5(x))}.`,at:q15(x-10/60)});
 
-  if(F.today){
-    const d=F.today,w=d.weather,ev=d.events||[],now=toH(d.now), s=[];
-    if(d.exit_actual){const e=d.exit_err_min;
-      const vs=e==null||Math.abs(e)<=20?'right on time':e>0?`${mins(e)} later than we expected`:`${mins(-e)} earlier than we expected`;
-      s.push(`Leo headed out at ${fmt(toH(d.exit_actual))}, ${vs}${e>20&&w.t_min<1?' (frosty mornings seem to slow him down)':''}.`);
-    } else s.push(`Leo hasn't gone out yet this morning.`);
-    let snackDone=null;
-    for(let i=0;i<ev.length-1;i++){const back=ev[i].back,next=ev[i+1];
-      if(back&&next.out){const gap=Math.round((toH(next.out)-toH(back))*60), sn=toH(back)>=9.5&&toH(back)<=12&&gap<=40;
-        if(sn) snackDone=[fmt(toH(back)),`Popped in at ${fmt(toH(back))} for ${gap} minutes.`];
-        s.push(sn?`He popped home at ${fmt(toH(back))} for a ${gap}-minute snack, then went back out at ${fmt(toH(next.out))}.`:`He came home at ${fmt(toH(back))} and went out again at ${fmt(toH(next.out))}.`);}}
-    s.push(d.state==='out'?`He's out now, and has been since ${fmt(toH(d.since))}.`:`He's home now, since ${fmt(toH(d.since))}.`);
-    if(!snackDone&&now>12) snackDone=['–','No snack visit this morning.'];
-    const dd={exit:d.exit_actual||d.exit_expected,tea:d.tea_actual||d.tea_expected,tea_range:d.tea_actual?null:d.tea_range};
-    const el=document.createElement('article');el.className='day today';
-    el.innerHTML=`<div class="dh"><h3>Today</h3><span class="wx">${ddate(d.date)} · ${sky(w)} · dark by ${fmt(toH(w.sunset))}</span></div>
-      <span class="now ${d.state}"><i></i>${d.state==='out'?'Out':'Home'} right now <span style="font-weight:400">· as of ${fmt(now)}</span></span>
-      <p class="story">${s.join(' ')}</p>
-      ${plan(dd,H,late,{breakfastDone:d.exit_actual?`Went out at ${fmt(toH(d.exit_actual))}.`:null,snackDone,teaDone:d.tea_actual?`Home for dinner at ${fmt(toH(d.tea_actual))}.`:null})}`;
-    box.appendChild(el);
+  if(h<5) return bfast(exitE);
+  if(!left) return bfast(exitE);
+  if(!teaDone&&h<12&&snack&&!popped&&h<snack+.75){
+    if(!out) return {label:'Snack',what:'He\'s popped in',why:'Probably after a snack. He\'ll likely head out again soon.'};
+    return {label:'Snack',what:`Around <em>${fmt(q15(snack))}</em>`,why:'He often pops in mid-morning. Leave a little something out.',at:q15(snack)};
   }
-
-  F.days.forEach((d,i)=>{
-    const w=d.weather, exit=toH(d.exit), tea=toH(d.tea), label=i===0?'Tomorrow':dname(d.date);
-    const story=`${label} looks ${sky(w)}, dark by ${fmt(toH(w.sunset))}. Leo should head out around ${fmt(r5(exit))}${w.t_min<1?' (a bit later if it\'s frosty)':''}, maybe pop back for a snack mid-morning, and spend lunchtime out. Get his dinner ready for ${fmt(q15(tea-10/60))}: he should be home around ${fmt(r5(tea))}.`;
-    const el=document.createElement('article');el.className='day';
-    el.innerHTML=`<div class="dh"><h3>${label}</h3><span class="wx">${dname(d.date)} ${ddate(d.date)}</span></div>
-      ${d.note?`<p class="story" style="background:var(--out-bg);padding:10px 14px;border-radius:12px">Note: ${esc(d.note)}</p>`:''}
-      <p class="story">${story}</p>${plan(d,H,late)}`;
-    box.appendChild(el);
-  });
-
-  const live=F.scorecard.live, bt=F.scorecard.backtest, sc=document.getElementById('score');
-  const isLive=!!(live&&live.summary), sum=isLive?live.summary:bt.summary, of=(x,n)=>`${Math.round(x*n)} of ${n}`;
-  let t=`<h2>How are the guesses doing?</h2><p>We write each guess down before the day starts, then check it against what Leo really did. A guess counts as right if it's within 45 minutes.</p>`;
-  t+=isLive?`<p>So far, dinner-time guesses were right on <b>${of(sum.tea_hit,sum.days)} days</b>, and morning guesses on <b>${of(sum.exit_hit,sum.days)} days</b>.</p>`
-           :`<p>Tested on last week, dinner-time guesses were right on <b>${of(sum.tea_hit,sum.days)} days</b>, and morning guesses on <b>${of(sum.exit_hit,sum.days)} days</b>. Real tracking starts with today.</p>`;
-  if(F.today&&F.today.exit_err_min!=null){const e=F.today.exit_err_min;
-    t+=`<p>Today we guessed he'd go out at ${fmt(toH(F.today.exit_expected))}, and he went at ${fmt(toH(F.today.exit_actual))}. ${Math.abs(e)<=45?'Close enough ✓':'A miss, and the model will learn from it.'}</p>`;}
-  const cell=(p,a,e,hit)=>`${fmt(toH(p))} → ${fmt(toH(a))}${hit==null?'':`<span class="res ${hit?'hit':'miss'}">${hit?'✓':`✗ ${Math.abs(e)} min`}</span>`}`;
-  const rows=[...(live.days||[]),...bt.days.map(r=>({...r,test:true}))].reverse();
-  t+=`<details><summary>See every guess vs what happened</summary><div class="tbl"><table><thead><tr><th>Day</th><th>Out: guess → real</th><th>Dinner: guess → real</th></tr></thead><tbody>${
-    rows.map(r=>`<tr><td>${dname(r.date)} ${ddate(r.date)}${r.test?' <span style="color:var(--muted)">(test)</span>':''}</td><td>${cell(r.exit_pred,r.exit_actual,r.exit_err_min,r.exit_hit)}</td><td>${cell(r.tea_pred,r.tea_actual,r.tea_err_min,r.tea_hit)}</td></tr>`).join('')}</tbody></table></div></details>`;
-  sc.innerHTML=t;
+  if(!teaDone){
+    const ready=q15(tea-10/60);
+    if(h<tea) return {label:'Dinner',what:`Get it ready for <em>${fmt(ready)}</em>`,why:`He should be home around ${fmt(r5(tea))}.`,at:ready};
+    if(h<teaEnd) return {label:'Dinner',what:'He\'s due home <em>any minute</em>',why:`He's usually back by ${fmt(q15(teaEnd))}.`};
+    return {label:'Dinner',what:'Running late for dinner',why:`He's usually home by ${fmt(q15(teaEnd))}. Worth a look outside.`,warn:true};
+  }
+  if(out&&h>=22.5) return {label:'Bedtime',what:'Time to call him in',why:`He's still out, and it's past 10:30pm.`,warn:true};
+  if(out) return {label:'Bedtime',what:`Check on him at <em>10:30pm</em>`,why:'He\'s out for an evening stroll. He\'s usually back within the hour.',at:22.5};
+  if(h<bed) return {label:'Bedtime',what:`He's in for the night by <em>~${fmt(q15(bed))}</em>`,why:'If he pops out again, check on him at 10:30pm.',at:q15(bed)};
+  const te=tomorrowExit(F,date);
+  return te?{...bfast(te),label:'Tomorrow\'s breakfast',at:null}:{label:'Bedtime',what:'He\'s in for the night',why:'Sleep well, Leo.'};
 }
-fetch('forecast.json',{cache:'no-store'}).then(r=>r.json()).then(render).catch(()=>{document.getElementById('updated').textContent='The forecast is having a nap. Try again in a minute.'});
+
+function byClock(T,h,snack,bed,F,date){  // live data paused: follow his usual day
+  const exitE=toH(T.exit_actual||T.exit_expected), tea=toH(T.tea_actual||T.tea_expected), teaEnd=T.tea_range?toH(T.tea_range[1]):tea+.75;
+  const bfast=x=>({label:'Breakfast',what:`Have it down by <em>${fmt(q15(x-10/60))}</em>`,why:`He usually heads out around ${fmt(r5(x))}.`,at:q15(x-10/60)});
+  if(h<exitE) return bfast(exitE);
+  if(snack&&h<snack+.5) return {label:'Snack',what:`Around <em>${fmt(q15(snack))}</em>`,why:'He often pops in mid-morning. Leave a little something out.',at:q15(snack)};
+  if(h<tea) return {label:'Dinner',what:`Get it ready for <em>${fmt(q15(tea-10/60))}</em>`,why:`He's usually home around ${fmt(r5(tea))}.`,at:q15(tea-10/60)};
+  if(h<teaEnd) return {label:'Dinner',what:'He\'s due home <em>about now</em>',why:`He's usually back by ${fmt(q15(teaEnd))}.`};
+  if(h<22.5) return {label:'Bedtime',what:`Check he's in by <em>10:30pm</em>`,why:`He's usually in for the night by about ${fmt(q15(bed))}.`,at:22.5};
+  const te=tomorrowExit(F,date);
+  return te?{...bfast(te),label:'Tomorrow\'s breakfast',at:null}:{label:'Bedtime',what:'He should be in for the night',why:'Sleep well, Leo.'};
+}
+
+function render(){
+  if(!F) return;
+  const {h,date}=ukParts(), n=decide(F), T=today(F,date);
+  const pill=document.getElementById('now');
+  const stale=!T||T.state==null;
+  if(stale) pill.hidden=true;
+  else if(T&&T.since){pill.hidden=false;pill.className=`now ${T.state}`;pill.querySelector('span').textContent=`${T.state==='out'?'Out':'Home'} since ${fmt(toH(T.since))}`;}
+  const el=document.getElementById('next');
+  el.className='next'+(n.warn?' warn':'');
+  el.innerHTML=`<span class="label">Next up · ${n.label}</span><div class="what">${n.what}</div>${n.why?`<p class="why">${n.why}</p>`:''}${n.at!=null&&n.at>h?`<p class="count">${inT(h,n.at)}</p>`:''}`;
+  const age=Math.round((Date.now()-new Date(F.generated))/60000);
+  document.getElementById('fresh').textContent=stale?`Following his usual routine. Live updates paused (last one ${age<1440?Math.round(age/60)+' h':Math.round(age/1440)+' days'} ago).`
+    :(()=>{const a2=liveFresh()?Math.round((Date.now()-L.ts)/60000):age;return a2<2?'Live · just updated':`Live · updated ${a2} min ago`})();
+}
+async function load(){try{const r=await fetch(`forecast.json?t=${Date.now()}`,{cache:'no-store'});F=await r.json();render();}catch(e){}}
+load(); loadLive(); setInterval(load,300000); setInterval(loadLive,60000); setInterval(render,30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){load();loadLive()}});
 </script>
 </body>
 </html>
