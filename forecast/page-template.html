@@ -118,6 +118,25 @@ function fromHabits(F,date){
   const sr=toH(s.sunrise), ss=toH(s.sunset), hm=x=>{const h=Math.floor(x),m=Math.round((x-h)*60);return `${String(h).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`};
   return {date,exit:hm(sr+ex[0]/60),tea:hm(ss+tv[0]/60),tea_range:[hm(ss+tv[1]/60),hm(ss+tv[2]/60)],weather:s};
 }
+// ---- the model, running in the browser from Leo's live state ----
+function hazP(M,x){if(!M)return .05;if(M.type==='const')return M.p;let z=M.b;M.names.forEach((n,i)=>{const v=x[n];z+=M.w[i]*((v==null?M.mean[i]:v)-M.mean[i])/M.scale[i]});return 1/(1+Math.exp(-z))}
+function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const SIMC={};
+function simulateRest(F,date,h,out,sinceH,sunsetH){
+  const key=[date,out,sinceH,Math.floor(h*4)].join('|'); if(SIMC[key])return SIMC[key];
+  const Mo=F.model; if(!Mo)return null;
+  const we=[0,6].includes(new Date(date+'T12:00:00Z').getUTCDay())?1:0, rand=rng(key.split('').reduce((a,c)=>a*31+c.charCodeAt(0)|0,7));
+  const start=Math.ceil(h*4)/4, N=2000, leaves=[], backs=[];
+  for(let r=0;r<N;r++){let st=out,d=Math.max(0,(h-(sinceH??h))*60),lv=null,bk=null;
+    for(let s=start;s<24;s+=.25){const tt=s*2*Math.PI/24,x={c1:Math.cos(tt),s1:Math.sin(tt),c2:Math.cos(2*tt),s2:Math.sin(2*tt),weekend:we,sunset:sunsetH-s,dur:Math.log1p(d)};
+      const p=st?hazP(Mo.return,x):hazP(Mo.leave,x);
+      if(rand()<p){ if(!st){if(lv==null)lv=s+.25} else {if(bk==null&&(out||lv!=null))bk=s+.25} st=!st;d=0;} else d+=15;
+      if(bk!=null&&(out||lv!=null))break;}
+    leaves.push(lv);backs.push(bk);}
+  const q=(a,p)=>{const v=a.filter(x=>x!=null).sort((x,y)=>x-y);return v.length?v[Math.min(v.length-1,Math.floor(p*v.length))]:null};
+  return SIMC[key]={pLeave:leaves.filter(x=>x!=null).length/N,leave:q(leaves,.5),back:q(backs,.5),backLate:q(backs,.85)};
+}
+
 function todayBase(F,date){
   if(F.today&&F.today.date===date) return F.today;
   const d=(F.days||[]).find(x=>x.date===date)||fromHabits(F,date);
@@ -142,6 +161,17 @@ function decide(F){
   if(!teaDone&&h<12&&snack&&!popped&&h<snack+.75){
     if(!out) return {label:'Snack',what:'He\'s popped in',why:'Probably after a snack. He\'ll likely head out again soon.'};
     return {label:'Snack',what:`Around <em>${fmt(q15(snack))}</em>`,why:'He often pops in mid-morning. Leave a little something out.',at:q15(snack)};
+  }
+  if(!teaDone&&h>=11){
+    const sunsetH=toH((SUN[date]||T.weather||{}).sunset)||16, S=simulateRest(F,date,h,out,sinceH,sunsetH);
+    if(S&&S.back!=null){
+      if(!out&&S.pLeave>=.5){const din=Math.max(S.back,tea), ready=q15(din-10/60);
+        return {label:'Dinner',what:`Dinner around <em>${fmt(q15(din))}</em>`,why:`He's popped home early and will probably head out again around ${fmt(r5(S.leave))}.`,at:ready};}
+      if(!out) return {label:'Dinner',what:`Dinner at <em>${fmt(q15(tea-10/60))}</em>`,why:`He's home, and will probably stay in.`,at:q15(tea-10/60)};
+      const back=S.back, ready=q15(back-10/60);
+      if(h<back) return {label:'Dinner',what:`Get it ready for <em>${fmt(ready)}</em>`,why:`He should be home around ${fmt(r5(back))}.`,at:ready};
+      if(h<(S.backLate||back+.75)) return {label:'Dinner',what:'He\'s due home <em>any minute</em>',why:`He's usually back by ${fmt(q15(S.backLate||back+.75))}.`};
+    }
   }
   if(!teaDone){
     const ready=q15(tea-10/60);
