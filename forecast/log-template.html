@@ -4,76 +4,104 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Leo's Forecast Today</title>
-<meta name="description" content="How Leo's dinner forecast moved today, live.">
-<meta name="theme-color" content="#f4f5f7">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%88%3C/text%3E%3C/svg%3E">
+<title>Leo's Brain</title>
+<meta name="description" content="What Leo's forecast is thinking right now, and how it changed its mind today.">
+<meta name="theme-color" content="#f6f1f4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%A0%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
 <style>
-/* One chart: each row is what the forecast said at that moment; the bar runs to when it expected him home. */
+/* Leo's brain: the forecast speaking in first person. One big "right now" thought, then today's train of thought, newest first. */
 :root{
-  --page:#f4f5f7; --card:#ffffff; --ink:#16191e; --ink-2:#4b525c; --muted:#7d848f; --line:#e3e6eb; --grid:#eceef2;
-  --out:#e2622c; --out-soft:#f6c3ad; --home:#2f6fd1; --home-soft:#bcd2f3; --real:#16191e;
+  --page:#f6f1f4; --card:#ffffff; --ink:#1b1820; --ink-2:#4f4a57; --muted:#857f8e; --line:#ebe3ea;
+  --brain:#f4a9bd; --brain-2:#e9809e; --brain-ink:#8f2c4b; --spark:#ffb547;
+  --out:#e2622c; --out-bg:#fde8de; --out-ink:#8a3a12; --home:#2f6fd1; --home-bg:#e6eefb; --home-ink:#1f4f8f;
+  --win-bg:#e3f5e8; --win-ink:#1f6b3a;
   --f-display:"Bricolage Grotesque", "Inter", system-ui, sans-serif; --f-body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --page:#111316; --card:#1a1d22; --ink:#eef0f3; --ink-2:#b9bfc8; --muted:#8a919b; --line:#2b3038; --grid:#23272e;
-  --out:#f07a45; --out-soft:#6b3420; --home:#6a9df0; --home-soft:#24406b; --real:#eef0f3;}}
+  --page:#141116; --card:#1d1920; --ink:#f1edf3; --ink-2:#c3bcc9; --muted:#918a99; --line:#2e2832;
+  --brain:#b95f7c; --brain-2:#d97a98; --brain-ink:#f6b9cb; --spark:#ffc46b;
+  --out-bg:#3a2218; --out-ink:#f6b493; --home-bg:#1b2a40; --home-ink:#a9c6f3; --win-bg:#173323; --win-ink:#9fe0b4;}}
 :root[data-theme="dark"]{
-  --page:#111316; --card:#1a1d22; --ink:#eef0f3; --ink-2:#b9bfc8; --muted:#8a919b; --line:#2b3038; --grid:#23272e;
-  --out:#f07a45; --out-soft:#6b3420; --home:#6a9df0; --home-soft:#24406b; --real:#eef0f3;}
+  --page:#141116; --card:#1d1920; --ink:#f1edf3; --ink-2:#c3bcc9; --muted:#918a99; --line:#2e2832;
+  --brain:#b95f7c; --brain-2:#d97a98; --brain-ink:#f6b9cb; --spark:#ffc46b;
+  --out-bg:#3a2218; --out-ink:#f6b493; --home-bg:#1b2a40; --home-ink:#a9c6f3; --win-bg:#173323; --win-ink:#9fe0b4;}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--page);color:var(--ink);font:400 16px/1.5 var(--f-body);-webkit-font-smoothing:antialiased}
-.wrap{max-width:760px;margin:0 auto;padding:28px 16px 48px;display:flex;flex-direction:column;gap:18px}
-h1{font-family:var(--f-display);font-weight:800;font-size:1.6rem;margin:0;letter-spacing:-.01em}
+html,body{margin:0;background:var(--page);color:var(--ink);font:400 16px/1.55 var(--f-body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:640px;margin:0 auto;padding:28px 16px 56px;display:flex;flex-direction:column;gap:20px}
+.head{display:flex;align-items:center;gap:16px}
+.brain{width:92px;flex:none}
+.brain svg{display:block;width:100%;height:auto;overflow:visible}
+.brain .lobe{fill:var(--brain)} .brain .fold{fill:none;stroke:var(--brain-2);stroke-width:3.2;stroke-linecap:round}
+.brain .spark{fill:var(--spark);opacity:0}
+@media (prefers-reduced-motion: no-preference){
+  .brain .spark{animation:zap 2.4s ease-in-out infinite}
+  .brain .spark:nth-of-type(2){animation-delay:.8s} .brain .spark:nth-of-type(3){animation-delay:1.6s}
+  .brain svg{animation:think 4s ease-in-out infinite;transform-origin:50% 60%}
+  .dots i{animation:blink 1.4s infinite} .dots i:nth-child(2){animation-delay:.2s} .dots i:nth-child(3){animation-delay:.4s}
+}
+@keyframes zap{0%,100%{opacity:0;transform:scale(.6)}40%{opacity:1;transform:scale(1)}}
+@keyframes think{50%{transform:scale(1.03) rotate(-1deg)}}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.brain .spark{transform-box:fill-box;transform-origin:center}
+h1{font-family:var(--f-display);font-weight:800;font-size:1.9rem;margin:0;letter-spacing:-.01em;line-height:1.1}
 .sub{margin:4px 0 0;color:var(--ink-2)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px 18px}
-.key{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.85rem;color:var(--ink-2);margin:0 0 10px}
-.key span{display:inline-flex;align-items:center;gap:7px}
-.sw{width:18px;height:4px;border-radius:2px;display:inline-block}
-.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
-svg{display:block;width:100%;height:auto;overflow:visible}
-svg text{font:500 11px var(--f-body);fill:var(--muted)}
-svg .rowlab{font-size:11.5px;fill:var(--ink-2);font-variant-numeric:tabular-nums}
-svg .hit{fill:transparent;cursor:default}
-svg .hit:hover{fill:var(--grid)}
-.tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--page);font-size:.85rem;padding:8px 10px;border-radius:10px;max-width:260px;opacity:0;transition:opacity .1s;z-index:5}
-h2{font-family:var(--f-display);font-weight:800;font-size:1.15rem;margin:0 0 10px}
-ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
-ol li{display:grid;grid-template-columns:64px 1fr;gap:10px}
-ol b{font-weight:600;font-variant-numeric:tabular-nums}
-ol p{margin:0;color:var(--ink-2)}
-ol strong{color:var(--ink);font-weight:600}
-.fresh{font-size:.82rem;color:var(--muted)}
+.now{position:relative;background:var(--card);border:1px solid var(--line);border-radius:28px;padding:24px 22px 22px;display:flex;flex-direction:column;gap:12px}
+.now:before,.now:after{content:"";position:absolute;background:var(--card);border:1px solid var(--line);border-radius:50%}
+.now:before{width:22px;height:22px;left:40px;top:-30px} .now:after{width:12px;height:12px;left:30px;top:-48px}
+.tag{font-size:.78rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
+.dots{display:inline-flex;gap:3px} .dots i{width:5px;height:5px;border-radius:50%;background:var(--brain-2);display:block}
+.big{font-family:var(--f-display);font-weight:800;font-size:clamp(1.7rem,6.5vw,2.3rem);line-height:1.12;letter-spacing:-.015em;margin:0;text-wrap:balance}
+.big em{font-style:normal;color:var(--brain-2)}
+.say{margin:0;color:var(--ink-2);font-size:1.05rem}
+.clues{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.clue{font-size:.88rem;background:var(--page);border-radius:999px;padding:6px 12px;color:var(--ink-2)}
+h2{font-family:var(--f-display);font-weight:800;font-size:1.2rem;margin:8px 0 0}
+.stream{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.th{display:grid;grid-template-columns:58px 1fr;gap:12px;align-items:start}
+.th time{font-weight:600;font-variant-numeric:tabular-nums;color:var(--muted);font-size:.9rem;padding-top:14px;text-align:right}
+.bub{background:var(--card);border:1px solid var(--line);border-radius:6px 20px 20px 20px;padding:12px 15px;display:flex;flex-direction:column;gap:6px}
+.bub .ev{font-weight:600;display:flex;align-items:center;gap:8px}
+.bub .ev:before{content:"";width:9px;height:9px;border-radius:50%;background:var(--muted);flex:none}
+.bub.out .ev:before{background:var(--out)} .bub.home .ev:before{background:var(--home)}
+.bub p{margin:0;color:var(--ink-2)}
+.bub .guess{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.pill{font-size:.82rem;font-weight:600;border-radius:999px;padding:3px 10px;background:var(--page);color:var(--ink-2)}
+.pill.later{background:var(--out-bg);color:var(--out-ink)} .pill.earlier{background:var(--home-bg);color:var(--home-ink)}
+.bub.result{background:var(--win-bg);border-color:transparent}
+.bub.result .ev:before{background:var(--win-ink)}
+.bub.result p{color:var(--ink)}
+.fresh{font-size:.82rem;color:var(--muted);margin:0}
 a{color:inherit}
-.empty{color:var(--muted);margin:8px 0}
+.empty{color:var(--muted);margin:0}
 </style>
 </head>
 <body>
 <main class="wrap">
-  <div><h1>How today's forecast moved</h1>
-  <p class="sub">Each line is what the forecast said at that moment. The line runs to when it expected Leo home. Updates by itself.</p></div>
-  <section class="card">
-    <div class="key">
-      <span><i class="sw" style="background:var(--out)"></i>He was out</span>
-      <span><i class="sw" style="background:var(--home)"></i>He was home</span>
-      <span><i class="dot" style="background:var(--ink)"></i>Expected home</span>
-      <span><i class="sw" style="background:var(--grid);border:1px solid var(--line)"></i>Almost certainly by</span>
-      <span><i class="sw" style="width:2px;height:12px;background:var(--ink-2)"></i>He came home</span>
-    </div>
-    <div id="chart"><p class="empty">Loading today…</p></div>
-  </section>
-  <section class="card"><h2>What changed the forecast</h2><ol id="moments"></ol></section>
+  <div class="head">
+    <div class="brain" aria-hidden="true"><svg viewBox="0 0 120 100">
+      <path class="lobe" d="M58 14c-6-8-20-9-27-2-9-2-18 5-18 14-8 3-12 12-8 20-5 6-4 16 3 21 0 9 9 15 18 13 5 7 16 9 23 3 3 1 6 1 9 0z"/>
+      <path class="lobe" d="M62 14c6-8 20-9 27-2 9-2 18 5 18 14 8 3 12 12 8 20 5 6 4 16-3 21 0 9-9 15-18 13-5 7-16 9-23 3-3 1-6 1-9 0z"/>
+      <path class="fold" d="M60 16v66M35 22c6 2 9 8 7 14M20 40c8-2 15 3 16 10M24 64c6-6 15-5 19 1M44 80c0-6 4-10 10-11M85 22c-6 2-9 8-7 14M100 40c-8-2-15 3-16 10M96 64c-6-6-15-5-19 1M76 80c0-6-4-10-10-11"/>
+      <circle class="spark" cx="30" cy="10" r="5"/><circle class="spark" cx="104" cy="18" r="4"/><circle class="spark" cx="112" cy="70" r="4.5"/>
+    </svg></div>
+    <div><h1>Leo's brain</h1><p class="sub">What the forecast is thinking about Leo, and why it keeps changing its mind.</p></div>
+  </div>
+
+  <section class="now" id="now"><span class="tag">Thinking<span class="dots"><i></i><i></i><i></i></span></span><p class="big">Listening for Leo…</p></section>
+
+  <h2>Today's train of thought</h2>
+  <ol class="stream" id="stream"></ol>
   <p class="fresh" id="fresh"></p>
   <p class="fresh"><a href="../">← Back to Leo's forecast</a></p>
 </main>
-<div class="tip" id="tip"></div>
 <script>
 const toH=s=>{if(!s)return null;const [h,m]=s.split(':').map(Number);return h+m/60};
 const fmt=x=>{if(x==null)return'–';x=((x%24)+24)%24;let h=Math.floor(x),m=Math.round((x-h)*60);if(m===60){h=(h+1)%24;m=0}
   if(h===12&&m===0)return'noon';const ap=h<12?'am':'pm';const hh=h%12||12;return m?`${hh}:${String(m).padStart(2,'0')}${ap}`:`${hh}${ap}`};
 const q15=x=>Math.round(x*4)/4;
+const dur=m=>{m=Math.round(m);if(m<60)return`${m} minutes`;const h=Math.floor(m/60),r=m%60;return `${h} hour${h>1?'s':''}${r?` ${r} min`:''}`};
 const uk=ms=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(ms)).map(x=>[x.type,x.value]));
   return {date:`${p.year}-${p.month}-${p.day}`,h:+p.hour+(+p.minute)/60}};
 __SIM__
@@ -92,71 +120,98 @@ async function loadAll(){
   draw();
 }
 
-// what the page believed at moment t: the newest status message, if it was fresh (45 min)
+// what the forecast believed at moment t: the newest status message, if it was fresh (45 min)
 const stateAt=t=>{let m=null;for(const x of MSG){if(x.ts>t)break;m=x}return m&&t-m.ts<45*60000?m:null};
+
+// how sure: the gap between "probably" and "almost certainly"
+const sure=r=>{const g=(r.backLate-r.back)*60; return g<=60?'I\'m fairly sure about this one':g<=150?'I have a decent idea':'it\'s a wide guess, he could make a night of it'};
+
+function thoughtFor(r,prev,ctx){
+  const {sunset}=ctx, g=fmt(q15(r.back)), late=fmt(q15(r.backLate));
+  const moved=prev?Math.round((q15(r.back)-q15(prev.back))*60):0;
+  const pill=prev&&moved?`<span class="pill ${moved>0?'later':'earlier'}">${Math.abs(moved)} min ${moved>0?'later':'earlier'}</span>`:'';
+  const guess=`<div class="guess"><span class="pill">My guess: home ${g}</span>${pill}</div>`;
+  const outFor=r.sinceH!=null?(r.h-r.sinceH)*60:0;
+  let cls=r.out?'out':'home', ev, p;
+  if(!prev){
+    ev=r.out?`Out since ${fmt(r.sinceH)}`:`Home since ${fmt(r.sinceH)}`;
+    p=r.out?`He's been out for ${dur(outFor)}. Based on how his days usually go, I think he'll be home around <b>${g}</b>.`
+           :`He's home for now. It's early, so I expect him to head out again around ${fmt(q15(r.leave))} and be back for dinner around <b>${g}</b>.`;
+  } else if(r.change&&!r.out){
+    ev=`He came home at ${fmt(r.sinceH)}`;
+    p=r.pLeave>=.5?`It's still early and he isn't usually done for the day yet, so I don't think this is dinner. I reckon he'll pop back out around ${fmt(q15(r.leave))} and come home properly around <b>${g}</b>.`
+                  :`This looks like him settling in. I'll keep dinner at about <b>${g}</b>.`;
+  } else if(r.change&&r.out){
+    const lag=(r.h-r.sinceH)*60;
+    ev=`He went out`;
+    p=lag>=20?`I last heard him at ${fmt(r.sinceH)}. I wait for 30 quiet minutes before I'm sure he's gone, so I've only just caught up. `:`He's off again. `;
+    p+=moved<0?`That actually brings my guess <b>forward</b>: once he's out, he usually comes back for dinner, so I'm now expecting him around <b>${g}</b>.`
+              :`I'm expecting him back around <b>${g}</b>.`;
+  } else if(!r.out&&r.quiet>=10){
+    ev=`It's gone quiet`;
+    p=`I haven't heard him for ${Math.round(r.quiet)} minutes. He's probably slipped out, but I don't say so until it's been 30 minutes, so for now I'm still assuming he's indoors. That's why my guess is creeping later to <b>${g}</b>.`;
+  } else if(r.out){
+    ev=`Still out (${dur(outFor)})`;
+    const dark=r.h>sunset+.25;
+    if(moved>0) p=dark?`The sun went down at ${fmt(sunset)} and he's still not back. When he stays out past dusk he often makes a long evening of it, so I'm pushing my guess later, to <b>${g}</b>.`
+                      :`He's still out. The longer he's away without popping back, the less likely a quick return is, so I'm nudging my guess a little later, to <b>${g}</b>.`;
+    else if(moved<0) p=`Getting closer to his usual dinner time. I'm bringing my guess forward to <b>${g}</b>.`;
+    else p=`Nothing surprising yet. I'm sticking with about <b>${g}</b>.`;
+  } else {
+    ev=`Still home`; p=`He's settled indoors. Dinner around <b>${g}</b> still looks right.`;
+  }
+  return {cls,ev,p,guess};
+}
 
 function draw(){
   const now=Date.now(), today=uk(now).date, nowH=uk(now).h, sunset=SUN||toH(F?.today?.weather?.sunset)||16;
-  const fresh=document.getElementById('fresh');
-  if(!F||!F.model||!MSG.length){document.getElementById('chart').innerHTML='<p class="empty">No live updates from the scanner in the last few hours.</p>';fresh.textContent='';return}
-  // moments: every 30 min from 11am (dinner forecasts start then) + every status change
-  const t0=Math.max(MSG[0].ts, Date.parse(today+'T00:00:00Z')+0), ticks=new Set();
-  const dayStart=now-(nowH-11)*3600000;
-  for(let t=Math.ceil(Math.max(t0,dayStart)/1800000)*1800000;t<=now;t+=1800000) ticks.add(t);
-  const changes=[]; MSG.forEach((m,i)=>{const p=MSG[i-1]; if(m.ts>=Math.max(t0,dayStart)&&(!p||p.away!==m.away||(p.since!==m.since&&m.since>0))){ticks.add(m.ts+60000);changes.push(m)}});
-  ticks.add(now);
-  const rows=[...ticks].sort((a,b)=>a-b).map(t=>{const m=stateAt(t); if(!m) return null;
+  const fresh=document.getElementById('fresh'), nowEl=document.getElementById('now'), stream=document.getElementById('stream');
+  if(!F||!F.model||!MSG.length){nowEl.querySelector('.big').textContent='I can\'t hear the scanner right now.';stream.innerHTML='<li class="empty">My thoughts will appear here once the scanner checks in.</li>';fresh.textContent='';return}
+
+  // moments worth a thought: every 30 min from 11am, every out/home change, and now
+  const t0=Math.max(MSG[0].ts, now-(nowH-11)*3600000), ticks=new Map();
+  for(let t=Math.ceil(t0/1800000)*1800000;t<=now;t+=1800000) ticks.set(t,false);
+  MSG.forEach((m,i)=>{const p=MSG[i-1]; if(m.ts>=t0&&p&&(p.away!==m.away)) ticks.set(m.ts+60000,true)});
+  ticks.set(now,false);
+  const rows=[...ticks.entries()].sort((a,b)=>a[0]-b[0]).map(([t,change])=>{const m=stateAt(t); if(!m) return null;
     const h=uk(t).h, sinceH=m.since>0?uk(m.since).h:null, S=simulateRest(F,today,h,m.away,sinceH,sunset);
     const quiet=(m.heard_ago_s||0)/60+(t-m.ts)/60000;
-    return S&&S.back!=null?{t,h,out:m.away,sinceH,quiet,...S}:null}).filter(Boolean)
-    .filter((r,i,a)=>!(i&&a[i-1].out===r.out&&a[i-1].back===r.back&&a[i-1].backLate===r.backLate&&r.t!==now&&r.h-a[i-1].h<.49));
-  // real out/home spells (back-dated to when the scanner last heard him)
-  const spells=[]; let cur=null; for(const m of MSG){ if(!(m.since>0)) continue; if(!cur||cur.away!==m.away){ if(cur) cur.end=m.since; cur={away:m.away,start:m.since}; spells.push(cur)} } if(cur) cur.end=now;
-  const arrivals=spells.filter((s,i)=>!s.away&&i>0&&uk(s.start).date===today).map(s=>uk(s.start).h);
+    return S&&S.back!=null?{t,h,out:m.away,sinceH,quiet,change,...S}:null}).filter(Boolean);
 
-  // ---- chart geometry
-  const W=Math.max(340,Math.min(720,document.getElementById('chart').clientWidth||720)), L=W<500?62:92, R=14, top=34, rh=26, H=top+rows.length*rh+30;
-  const x0=Math.floor(Math.min(...rows.map(r=>r.h),12)), x1=Math.min(24,Math.ceil(Math.max(nowH+.5,...rows.map(r=>r.backLate||r.back))+.25));
-  const X=h=>L+(h-x0)/(x1-x0)*(W-L-R);
-  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Forecast of when Leo would be home, as it changed through the day">`;
-  for(let h=x0;h<=x1;h++){const x=X(h);s+=`<line x1="${x}" x2="${x}" y1="${top-6}" y2="${H-24}" stroke="var(--grid)"/>`;if((h-x0)%(x1-x0>8?2:1)===0)s+=`<text x="${x}" y="${H-8}" text-anchor="middle">${fmt(h).replace(':00','')}</text>`}
-  // status strip
-  spells.forEach(sp=>{const a=Math.max(x0,uk(sp.start).date===today?uk(sp.start).h:x0), b=Math.min(x1,uk(sp.end).h); if(b>a) s+=`<rect x="${X(a)}" y="8" width="${X(b)-X(a)}" height="8" rx="4" fill="var(--${sp.away?'out':'home'})"/>`});
-  s+=`<text x="${L-10}" y="16" text-anchor="end">Leo</text>`;
-  const vline=(h,label,dash)=>{if(h<x0||h>x1)return'';const x=X(h);return `<line x1="${x}" x2="${x}" y1="${top-8}" y2="${H-24}" stroke="var(--ink-2)" stroke-width="1.5" ${dash?'stroke-dasharray="3 4"':''}/><text x="${x+4}" y="${top-12}" style="fill:var(--ink-2)">${label}</text>`};
-  s+=vline(sunset,'sunset',true);
-  arrivals.forEach(a=>s+=vline(a,'',false));
-  s+=`<line x1="${X(nowH)}" x2="${X(nowH)}" y1="${top-8}" y2="${H-24}" stroke="var(--out)" stroke-width="2"/>`;
-  rows.forEach((r,i)=>{const y=top+i*rh+rh/2, c=r.out?'out':'home';
-    const tip=`${fmt(r.h)} · ${r.out?'out':'home'}${r.sinceH!=null?' since '+fmt(r.sinceH):''}<br>${!r.out&&r.leave!=null?`Expected out again ~${fmt(q15(r.leave))}<br>`:''}Expected home ~${fmt(q15(r.back))}<br>Almost certainly by ${fmt(q15(r.backLate))}`;
-    s+=`<rect class="hit" x="0" y="${y-rh/2}" width="${W}" height="${rh}" data-tip="${tip}"/>`;
-    s+=`<text class="rowlab" x="${L-10}" y="${y+4}" text-anchor="end">${r.t===now?'now':fmt(r.h)}</text>`;
-    s+=`<line x1="${X(r.back)}" x2="${X(r.backLate)}" y1="${y}" y2="${y}" stroke="var(--grid)" stroke-width="6" stroke-linecap="round"/>`;
-    s+=`<line x1="${X(r.h)}" x2="${X(r.back)}" y1="${y}" y2="${y}" stroke="var(--${c})" stroke-width="3" stroke-linecap="round"/>`;
-    if(!r.out&&r.leave!=null) s+=`<circle cx="${X(r.leave)}" cy="${y}" r="4" fill="var(--card)" stroke="var(--${c})" stroke-width="2"/>`;
-    s+=`<circle cx="${X(r.h)}" cy="${y}" r="3" fill="var(--${c})"/><circle cx="${X(r.back)}" cy="${y}" r="5" fill="var(--ink)" stroke="var(--card)" stroke-width="2"/>`;
+  // build thoughts; skip repeats that say nothing new; add a "how did I do?" when he comes home
+  const thoughts=[]; let prev=null, tripGuesses=[];
+  rows.forEach((r,i)=>{
+    const isNow=i===rows.length-1;
+    if(prev&&!r.change&&!isNow&&prev.out===r.out&&q15(prev.back)===q15(r.back)&&!(!r.out&&r.quiet>=10)) return;
+    if(r.change&&!r.out&&prev&&prev.out&&tripGuesses.length&&r.pLeave<.5){  // only score the homecoming I was predicting (dinner), not a quick pop-in
+      const a=r.sinceH, firstG=tripGuesses[0], lastG=tripGuesses[tripGuesses.length-1];
+      const off=Math.round((a-q15(firstG.back))*60), off2=Math.round((a-q15(lastG.back))*60);
+            thoughts.push({t:r.t,h:a,cls:'result',ev:'How did I do?',p:`When he went out I guessed <b>${fmt(q15(firstG.back))}</b>; he walked in at <b>${fmt(a)}</b>. ${Math.abs(off)<=15?'Spot on.':off<0?`He was ${Math.abs(off)} minutes earlier than I thought.`:`He was ${off} minutes later than I thought.`}${tripGuesses.length>1&&lastG!==firstG?` My last guess before he arrived was ${fmt(q15(lastG.back))} (${Math.abs(off2)<=15?'spot on':Math.abs(off2)+' min '+(off2<0?'too late':'too early')}).`:''}`,guess:''});
+    }
+    if(r.change) tripGuesses=[];
+    if(r.out) tripGuesses.push(r);
+    thoughts.push({t:r.t,h:r.h,isNow,...thoughtFor(r,prev,{sunset})});
+    prev=r;
   });
-  s+='</svg>';
-  document.getElementById('chart').innerHTML=s;
 
-  // ---- plain-English moments
-  const li=[]; let prevBack=null;
-  rows.forEach(r=>{const isChange=changes.some(m=>Math.abs(m.ts+60000-r.t)<1000), first=prevBack==null;
-    const moved=prevBack!=null?Math.round((r.back-prevBack)*60):0;
-    if(first||isChange||Math.abs(moved)>=30||r.t===now){
-      const what=first?(r.out?'Out':'Home')+(r.sinceH!=null?' since '+fmt(r.sinceH):''):r.t===now?(r.out?'Still out':'Home')+(!r.out&&r.quiet>=10?` (as far as the scanner knows: not heard for ${Math.round(r.quiet)} min)`:''):(isChange?(r.out?`He went out${r.sinceH!=null?' (last heard '+fmt(r.sinceH)+')':''}`:`He came home${r.sinceH!=null?' at '+fmt(r.sinceH):''}`):(r.out?`Still out`:`Still home`+(r.quiet>=10?` (as far as the scanner knew: it hadn't heard him for ${Math.round(r.quiet)} min, and needs 30 to be sure he's gone)`:'')));
-      const exp=`expected home <strong>${fmt(q15(r.back))}</strong>`+(!r.out&&r.leave!=null?` after another trip out around ${fmt(q15(r.leave))}`:'');
-      const why=first?'':moved>0?` (${moved} min later)`:moved<0?` (${-moved} min earlier)`:' (no change)';
-      li.push(`<li><b>${r.t===now?'Now':fmt(r.h)}</b><p>${what}: ${exp}${why}.</p></li>`);}
-    prevBack=r.back;});
-  document.getElementById('moments').innerHTML=li.join('');
+  // right now
+  const N=rows[rows.length-1], outFor=N.sinceH!=null?(nowH-N.sinceH)*60:0;
+  const big=N.out?`I think Leo will be home around <em>${fmt(q15(N.back))}</em>.`
+    :N.pLeave>=.5?`I think Leo will head out again around <em>${fmt(q15(N.leave))}</em>, and be home for dinner about <em>${fmt(q15(N.back))}</em>.`
+    :`Leo's home. Dinner around <em>${fmt(q15(N.back))}</em>.`;
+  const last=thoughts.filter(x=>x.isNow).pop();
+  const clues=[
+    N.sinceH!=null?`${N.out?'🚶 Out':'🏠 Home'} for ${dur(outFor)}`:null,
+    nowH<sunset?`🌅 Sunset at ${fmt(sunset)}. He usually heads home around then`:`🌙 Dark since ${fmt(sunset)}`,
+    `🎯 ${sure(N).replace(/^./,c=>c.toUpperCase())}. Almost certainly home by ${fmt(q15(N.backLate))}`,
+  ].filter(Boolean);
+  nowEl.innerHTML=`<span class="tag">Right now I'm thinking<span class="dots"><i></i><i></i><i></i></span></span><p class="big">${big}</p><p class="say">${last?last.p.replace(/<b>|<\/b>/g,''):''}</p><div class="clues">${clues.map(c=>`<span class="clue">${c}</span>`).join('')}</div>`;
+
+  // today's train of thought, newest first (the "now" one is already shown above)
+  stream.innerHTML=thoughts.filter(x=>!x.isNow).reverse().map(x=>`<li class="th"><time>${fmt(x.h)}</time><div class="bub ${x.cls}"><span class="ev">${x.ev}</span><p>${x.p}</p>${x.guess}</div></li>`).join('')||'<li class="empty">Nothing new to think about yet today.</li>';
   const age=Math.round((now-MSG[MSG.length-1].ts)/60000);
-  fresh.textContent=`Live from the scanner · last update ${age<2?'just now':age+' min ago'}. Each line re-runs the same model the forecast page uses.`;
+  fresh.textContent=`Listening to the scanner live · last heard from it ${age<2?'just now':age+' min ago'}. My guesses come from the same model as the forecast page, re-run every minute.`;
 }
-const tip=document.getElementById('tip');
-document.addEventListener('pointermove',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(!t){tip.style.opacity=0;return}
-  tip.innerHTML=t.dataset.tip;tip.style.opacity=1;const w=tip.offsetWidth;tip.style.left=Math.min(innerWidth-w-8,e.clientX+12)+'px';tip.style.top=(e.clientY+14)+'px'});
-let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(draw,150)});
 loadAll(); setInterval(loadAll,60000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)loadAll()});
 </script>
